@@ -1,0 +1,40 @@
+name: Deploying my Flask app
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setting python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Setting up the project
+        run: pip install -r requirements.txt
+
+      - name: Running Tests
+        run: pytest
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Building image
+        run: docker-compose up --build -d
+
+      - name: Stopping the container
+        run: docker-compose down
