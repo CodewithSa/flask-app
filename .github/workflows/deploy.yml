@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Building image
-        run: docker-compose up --build -d
+        run: docker compose up --build -d
 
       - name: Stopping the container
         run: docker-compose down
